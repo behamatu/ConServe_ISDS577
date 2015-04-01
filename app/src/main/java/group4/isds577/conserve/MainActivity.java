@@ -39,7 +39,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
      */
     ViewPager mViewPager;
 
-    /** Called when the user clicks the Send button */
+    /** Called when the user clicks the sign in button */
     public void openLogin(View view) {
         Intent intent = new Intent(this, LoginActivity.class);
         Button button = (Button)findViewById(R.id.btSignInMain);

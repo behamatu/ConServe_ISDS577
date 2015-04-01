@@ -26,8 +26,6 @@
             android:label="@string/title_activity_sign_up"
             android:parentActivityName=".LoginActivity">
             <!--set parent to LoginActivity so user can press button on action bar and return -->
-
-
         </activity>
     </application>
 
