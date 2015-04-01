@@ -4,6 +4,8 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.content.Intent;
+import android.view.View;
 
 
 public class SignUpActivity extends ActionBarActivity {
@@ -11,6 +13,8 @@ public class SignUpActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //calls the openLogin method from MainActivity.java//
+        Intent intent2 = getIntent();
         setContentView(R.layout.activity_sign_up);
     }
 

@@ -1,20 +1,32 @@
 package group4.isds577.conserve;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
 import android.view.WindowManager;
-
+import android.view.View;
+import android.widget.Button;
 
 
 public class LoginActivity extends ActionBarActivity{
 
 
+    //opens SignUp activity
+    public void openSignUp(View view) {
+        Intent intent2 = new Intent(this, SignUpActivity.class);
+        Button button = (Button)findViewById(R.id.btSignUpLogin);
+        startActivity(intent2);
+        // Do something in response to button
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //calls the openLogin method from MainActivity.java//
+        Intent intent = getIntent();
         setContentView(R.layout.activity_login);
     }
 

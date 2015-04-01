@@ -2,6 +2,7 @@ package group4.isds577.conserve;
 
 import java.util.Locale;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -16,7 +17,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
+import android.content.Intent;
 
 
 public class MainActivity extends ActionBarActivity implements ActionBar.TabListener {
@@ -35,6 +38,14 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
      * The {@link ViewPager} that will host the section contents.
      */
     ViewPager mViewPager;
+
+    /** Called when the user clicks the Send button */
+    public void openLogin(View view) {
+        Intent intent = new Intent(this, LoginActivity.class);
+        Button button = (Button)findViewById(R.id.btSignInMain);
+        startActivity(intent);
+        // Do something in response to button
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
