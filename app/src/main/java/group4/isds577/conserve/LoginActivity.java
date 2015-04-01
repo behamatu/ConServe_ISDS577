@@ -13,7 +13,8 @@ import android.widget.Button;
 
 public class LoginActivity extends ActionBarActivity{
 
-
+//johnson test github
+    
     //opens SignUp activity
     public void openSignUp(View view) {
         Intent intent2 = new Intent(this, SignUpActivity.class);
