@@ -72,16 +72,17 @@
             android:layout_height="fill_parent"
             android:id="@+id/signInHolder">
 
-            <TextView
+            <Button
+                style="@android:style/Widget.Holo.Button.Borderless"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:text="Have an account? Sign In"
-                android:id="@+id/tbSignIn"
-                android:textColor="#ffffffff"
-                android:layout_weight="1"
-                android:paddingTop="10dp"
-                android:textSize="15dp"
-                android:gravity="center" />
+                android:onClick="openLoginSignUp"
+                android:id="@+id/btSignInSignUp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:textColor="#ffffff" />
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

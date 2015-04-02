@@ -6,9 +6,18 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.content.Intent;
 import android.view.View;
+import android.widget.Button;
 
 
 public class SignUpActivity extends ActionBarActivity {
+
+    public void openLoginSignUp(View view) {
+        Intent intent3 = new Intent(this, LoginActivity.class);
+        Button button = (Button)findViewById(R.id.btSignInSignUp);
+        startActivity(intent3);
+        // Do something in response to button
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

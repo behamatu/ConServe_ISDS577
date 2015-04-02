@@ -28,6 +28,7 @@ public class LoginActivity extends ActionBarActivity{
         super.onCreate(savedInstanceState);
         //calls the openLogin method from MainActivity.java//
         Intent intent = getIntent();
+        Intent intent3 = getIntent();
         setContentView(R.layout.activity_login);
     }
 
