@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -46,6 +47,17 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
         startActivity(intent);
         // Do something in response to button
     }
+
+public void openProfile(View view)
+{
+    System.out.println("openProfile");
+    setContentView(R.layout.activity_profile);
+  //  Intent profileIntent = new Intent(this, MainActivity.class);
+  //  Button button = (Button)findViewById();
+  //  myactivity
+  //          startActivity(profileIntent);
+}
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
