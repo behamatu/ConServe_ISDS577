@@ -13,4 +13,5 @@
     <string name="title_activity_sign_up">SignUpActivity</string>
     <string name="title_activity_main_grid">MainGridActivity</string>
     <string name="title_activity_menu">MenuActivity</string>
+    <string name="title_activity_profile">ProfileActivity</string>
 </resources>

@@ -26,7 +26,7 @@ public class LoginActivity extends ActionBarActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //calls the openLogin method from MainActivity.java//
+        //calls the openLogin method from MenuActivity.java//
         Intent intent = getIntent();
         Intent intent3 = getIntent();
         setContentView(R.layout.activity_login);

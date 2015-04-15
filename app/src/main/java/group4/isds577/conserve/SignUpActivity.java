@@ -22,7 +22,7 @@ public class SignUpActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //calls the openLogin method from MainActivity.java//
+        //calls the openLogin method from MenuActivity.java//
         Intent intent2 = getIntent();
         setContentView(R.layout.activity_sign_up);
     }
