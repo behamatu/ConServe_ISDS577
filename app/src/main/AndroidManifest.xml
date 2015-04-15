@@ -10,22 +10,28 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+
         </activity>
         <activity
             android:name=".LoginActivity"
             android:label="@string/title_activity_login"
-            android:parentActivityName=".MainActivity">
-
+            android:parentActivityName=".MainActivity" >
         </activity>
         <activity
             android:name=".SignUpActivity"
             android:label="@string/title_activity_sign_up"
-            android:parentActivityName=".LoginActivity">
-            <!--set parent to LoginActivity so user can press button on action bar and return -->
+            android:parentActivityName=".LoginActivity" >
+
+            <!-- set parent to LoginActivity so user can press button on action bar and return -->
+        </activity>
+        <activity
+            android:name=".MenuActivity"
+            android:label="@string/title_activity_menu" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
     </application>
 
