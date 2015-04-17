@@ -3,7 +3,6 @@ package group4.isds577.conserve;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-
 import com.parse.ParseUser;
 
 /**
