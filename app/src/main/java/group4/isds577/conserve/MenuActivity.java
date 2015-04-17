@@ -8,17 +8,21 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import com.parse.Parse;
+import com.parse.ParseObject;
+import com.parse.ParseUser;
+
 
 public class MenuActivity extends ActionBarActivity {
 
 
     /** Called when the user clicks the sign in button */
-    public void openLogin(View view) {
-        Intent intent = new Intent(this, LoginActivity.class);
-        Button button = (Button)findViewById(R.id.btSignInMain);
-        startActivity(intent);
+    //public void openLogin(View view) {
+        //Intent intent = new Intent(this, LoginActivity.class);
+       // Button button = (Button)findViewById(R.id.btSignInMain);
+       // startActivity(intent);
         // Do something in response to button
-    }
+   // }
 
     public void openProfile(View view)
     {
@@ -53,6 +57,8 @@ public class MenuActivity extends ActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            ParseUser.getCurrentUser().logOut();
+            startActivity(new Intent(MenuActivity.this, DispatchActivity.class));
             return true;
         }
 

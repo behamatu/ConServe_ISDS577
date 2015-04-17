@@ -50,21 +50,6 @@
             android:orientation="vertical"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/checkBoxHolder">
-
-            <CheckBox
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Remember Me"
-                android:id="@+id/cbRememberMe"
-                android:textColor="#ffffff"
-                android:textSize="15dp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
             android:id="@+id/loginButtonHolder"
             android:weightSum="1">
 
