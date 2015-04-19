@@ -8,6 +8,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import android.widget.EditText;
+
 import com.parse.Parse;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
@@ -28,10 +30,33 @@ public class MenuActivity extends ActionBarActivity {
     {
         System.out.println("openProfile");
         setContentView(R.layout.activity_profile2);
-        //  Intent profileIntent = new Intent(this, MenuActivity.class);
-        //  Button button = (Button)findViewById();
-        //  myactivity
-        //          startActivity(profileIntent);
+
+        ParseUser user2 = ParseUser.getCurrentUser();
+        EditText profileUserName = (EditText)findViewById(R.id.editTextUsername);
+        profileUserName.setText(user2.getUsername());
+
+        System.out.println("user is " + user2.getUsername());
+
+        EditText profileEmail = (EditText)findViewById(R.id.editTextEmail);
+        profileEmail.setText(user2.getEmail());
+
+        System.out.println("email is " + user2.getEmail());
+
+        EditText profilePassword = (EditText)findViewById(R.id.editTextPassword);
+       // profileUserName.setText(user2.get);
+
+    }
+
+    public void backButtonPressed(View view)
+    {
+        System.out.println("going back");
+        setContentView(R.layout.activity_menu);
+    }
+
+    public void saveProfileButtonPressed(View view)
+    {
+        System.out.println("saving");
+        //setContentView(R.layout.activity_menu);
     }
 
     @Override

@@ -4,6 +4,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 
 public class ProfileActivity extends ActionBarActivity {
@@ -12,6 +13,17 @@ public class ProfileActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile2);
+        System.out.println("profile activity onCreate loaded");
+    }
+
+    public void backButtonPressed(View view)
+    {
+        System.out.println("going back");
+        setContentView(R.layout.activity_menu);
+        //  Intent profileIntent = new Intent(this, MenuActivity.class);
+        //  Button button = (Button)findViewById();
+        //  myactivity
+        //          startActivity(profileIntent);
     }
 
 /*

@@ -3,7 +3,8 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/R"
-    android:weightSum="1">
+    android:weightSum="1"
+    android:background="#ff33b5e5">
 
     <TableLayout
         android:layout_width="match_parent"
@@ -20,15 +21,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Name"
-                android:id="@+id/Name"
+                android:text="Username"
+                android:id="@+id/username"
                 android:layout_column="0" />
 
             <EditText
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/editText"
-                android:layout_column="1" />
+                android:id="@+id/editTextUsername"
+                android:layout_column="1"
+                android:editable="true" />
 
         </TableRow>
 
@@ -47,8 +49,9 @@
             <EditText
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/editText2"
-                android:layout_column="1" />
+                android:id="@+id/editTextEmail"
+                android:layout_column="1"
+                android:editable="true" />
 
         </TableRow>
 
@@ -60,14 +63,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Password"
+                android:text="New Password"
                 android:id="@+id/Password"
                 android:layout_column="0" />
 
             <EditText
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/editText3"
+                android:id="@+id/editTextPassword"
                 android:layout_column="1" />
 
         </TableRow>
@@ -134,14 +137,16 @@
                 android:layout_height="wrap_content"
                 android:text="Save"
                 android:id="@+id/saveButton"
-                android:layout_column="0" />
+                android:layout_column="0"
+                android:onClick="saveProfileButtonPressed" />
 
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Back"
                 android:id="@+id/backButton"
-                android:layout_column="1" />
+                android:layout_column="1"
+                android:onClick="backButtonPressed" />
         </TableRow>
 
         <TableRow
