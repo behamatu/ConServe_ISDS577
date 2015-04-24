@@ -7,12 +7,22 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import android.widget.EditText;
 
+import com.parse.CountCallback;
+import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.Parse;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
+import com.parse.ParseQuery;
+import com.parse.ParseException;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 
 public class MenuActivity extends ActionBarActivity {
@@ -57,6 +67,42 @@ public class MenuActivity extends ActionBarActivity {
     {
         System.out.println("saving");
         //setContentView(R.layout.activity_menu);
+    }
+
+
+
+    public void openWaterPage(View view)
+    {
+        //we open water resource page
+        setContentView(R.layout.resource_landing_page);
+        TextView title = (TextView)findViewById(R.id.resourceText);
+
+        title.setText("Water");
+
+        final TextView waterTip = (TextView)findViewById(R.id.tipOfTheDay);
+        int waterCount = 0;
+
+        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(
+                "WaterTips");
+
+        query.whereExists("tipText");
+
+        query.findInBackground(new FindCallback<ParseObject>() {
+            public void done(List<ParseObject> results, ParseException e) {
+                // results has the list of users with a hometown team with a losing record
+                System.out.println("results size " + results.size());
+                Random r = new Random();
+                int min = 0;
+                int max = results.size();
+                int i1 = r.nextInt(results.size() - 0 + 1) + 0;
+                System.out.println("random number is " + i1);
+                ParseObject tip = results.get(i1);
+                waterTip.setText(tip.getString("tipText"));
+                System.out.println("query find " + tip.getString("tipText"));
+            }
+        });
+
+
     }
 
     @Override
