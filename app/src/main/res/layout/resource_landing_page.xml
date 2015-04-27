@@ -25,4 +25,12 @@
         android:layout_width="match_parent"
         android:layout_height="393dp"
         android:id="@+id/resourceBadgeListView" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Back"
+        android:id="@+id/backResourceButton"
+        android:onClick="backButtonPressed" />
 </LinearLayout>

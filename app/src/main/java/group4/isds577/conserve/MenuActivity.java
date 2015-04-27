@@ -6,7 +6,9 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import android.widget.EditText;
@@ -89,7 +91,6 @@ public class MenuActivity extends ActionBarActivity {
 
         query.findInBackground(new FindCallback<ParseObject>() {
             public void done(List<ParseObject> results, ParseException e) {
-                // results has the list of users with a hometown team with a losing record
                 System.out.println("results size " + results.size());
                 Random r = new Random();
                 int min = 0;
@@ -103,6 +104,145 @@ public class MenuActivity extends ActionBarActivity {
         });
 
 
+        //create a list
+        ParseQuery<ParseObject> waterBadgeQuery = new ParseQuery<ParseObject>(
+                "WaterBadges");
+        waterBadgeQuery.whereExists("badgeTitle");
+
+        ArrayList<String> waterBList = new ArrayList<String>();
+
+        waterBadgeQuery.findInBackground(new FindCallback<ParseObject>() {
+            public void done(List<ParseObject> results, ParseException e) {
+
+                ListView waterList = (ListView)findViewById(R.id.resourceBadgeListView);
+                System.out.println("results water list size " + results.size());
+                ArrayList<String> waterBList = new ArrayList<String>();
+                for(int i = 0; i < results.size(); i++)
+                {
+                    System.out.println(results.get(i).getString("badgeTitle"));
+                    waterBList.add(results.get(i).getString("badgeTitle"));
+                }
+                ArrayAdapter<String> listAdapter = new ArrayAdapter<String>(MenuActivity.this, android.R.layout.simple_list_item_1, waterBList);
+                waterList.setAdapter(listAdapter);
+
+
+            }
+        });
+
+    }
+
+    public void openElectricityPage(View view)
+    {
+        //we open electricity resource page
+        setContentView(R.layout.resource_landing_page);
+        TextView title = (TextView)findViewById(R.id.resourceText);
+
+        title.setText("Electricity");
+
+        final TextView waterTip = (TextView)findViewById(R.id.tipOfTheDay);
+        int electricityCount = 0;
+
+        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(
+                "ElectricityTips");
+
+        query.whereExists("tipText");
+
+        query.findInBackground(new FindCallback<ParseObject>() {
+            public void done(List<ParseObject> results, ParseException e) {
+                System.out.println("results size " + results.size());
+                Random r = new Random();
+                int min = 0;
+                int max = results.size();
+                int i1 = r.nextInt(results.size() - 0 + 1) + 0;
+                System.out.println("random number is " + i1);
+                ParseObject tip = results.get(i1);
+                waterTip.setText(tip.getString("tipText"));
+                System.out.println("query find " + tip.getString("tipText"));
+            }
+        });
+
+
+        //create a list
+        ParseQuery<ParseObject> electricityBadgeQuery = new ParseQuery<ParseObject>(
+                "ElectricityBadges");
+        electricityBadgeQuery.whereExists("badgeTitle");
+
+
+
+        electricityBadgeQuery.findInBackground(new FindCallback<ParseObject>() {
+            public void done(List<ParseObject> results, ParseException e) {
+
+                ListView electricityList = (ListView)findViewById(R.id.resourceBadgeListView);
+                System.out.println("results electricity list size " + results.size());
+                ArrayList<String> electricityBList = new ArrayList<String>();
+                for(int i = 0; i < results.size(); i++)
+                {
+                    System.out.println(results.get(i).getString("badgeTitle"));
+                    electricityBList.add(results.get(i).getString("badgeTitle"));
+                }
+                ArrayAdapter<String> listAdapter = new ArrayAdapter<String>(MenuActivity.this, android.R.layout.simple_list_item_1, electricityBList);
+                electricityList.setAdapter(listAdapter);
+
+
+            }
+        });
+    }
+
+    public void openWastePage(View view)
+    {
+        //we open electricity resource page
+        setContentView(R.layout.resource_landing_page);
+        TextView title = (TextView)findViewById(R.id.resourceText);
+
+        title.setText("Waste");
+
+        final TextView waterTip = (TextView)findViewById(R.id.tipOfTheDay);
+
+
+        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(
+                "WasteTips");
+
+        query.whereExists("tipText");
+
+        query.findInBackground(new FindCallback<ParseObject>() {
+            public void done(List<ParseObject> results, ParseException e) {
+                System.out.println("results size " + results.size());
+                Random r = new Random();
+                int min = 0;
+                int max = results.size();
+                int i1 = r.nextInt(results.size() - 0 + 1) + 0;
+                System.out.println("random number is " + i1);
+                ParseObject tip = results.get(i1);
+                waterTip.setText(tip.getString("tipText"));
+                System.out.println("query find " + tip.getString("tipText"));
+            }
+        });
+
+
+        //create a list
+        ParseQuery<ParseObject> wasteBadgeQuery = new ParseQuery<ParseObject>(
+                "WasteBadges");
+        wasteBadgeQuery.whereExists("badgeTitle");
+
+
+
+        wasteBadgeQuery.findInBackground(new FindCallback<ParseObject>() {
+            public void done(List<ParseObject> results, ParseException e) {
+
+                ListView wasteList = (ListView)findViewById(R.id.resourceBadgeListView);
+                System.out.println("results waste list size " + results.size());
+                ArrayList<String> wasteBList = new ArrayList<String>();
+                for(int i = 0; i < results.size(); i++)
+                {
+                    System.out.println(results.get(i).getString("badgeTitle"));
+                    wasteBList.add(results.get(i).getString("badgeTitle"));
+                }
+                ArrayAdapter<String> listAdapter = new ArrayAdapter<String>(MenuActivity.this, android.R.layout.simple_list_item_1, wasteBList);
+                wasteList.setAdapter(listAdapter);
+
+
+            }
+        });
     }
 
     @Override
