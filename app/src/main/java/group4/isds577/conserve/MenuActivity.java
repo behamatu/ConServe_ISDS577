@@ -6,9 +6,11 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import android.widget.EditText;
@@ -95,7 +97,7 @@ public class MenuActivity extends ActionBarActivity {
                 Random r = new Random();
                 int min = 0;
                 int max = results.size();
-                int i1 = r.nextInt(results.size() - 0 + 1) + 0;
+                int i1 = r.nextInt(results.size());
                 System.out.println("random number is " + i1);
                 ParseObject tip = results.get(i1);
                 waterTip.setText(tip.getString("tipText"));
@@ -153,7 +155,7 @@ public class MenuActivity extends ActionBarActivity {
                 Random r = new Random();
                 int min = 0;
                 int max = results.size();
-                int i1 = r.nextInt(results.size() - 0 + 1) + 0;
+                int i1 = r.nextInt(results.size());
                 System.out.println("random number is " + i1);
                 ParseObject tip = results.get(i1);
                 waterTip.setText(tip.getString("tipText"));
@@ -210,7 +212,7 @@ public class MenuActivity extends ActionBarActivity {
                 Random r = new Random();
                 int min = 0;
                 int max = results.size();
-                int i1 = r.nextInt(results.size() - 0 + 1) + 0;
+                int i1 = r.nextInt(results.size());
                 System.out.println("random number is " + i1);
                 ParseObject tip = results.get(i1);
                 waterTip.setText(tip.getString("tipText"));
@@ -224,12 +226,10 @@ public class MenuActivity extends ActionBarActivity {
                 "WasteBadges");
         wasteBadgeQuery.whereExists("badgeTitle");
 
-
-
         wasteBadgeQuery.findInBackground(new FindCallback<ParseObject>() {
             public void done(List<ParseObject> results, ParseException e) {
 
-                ListView wasteList = (ListView)findViewById(R.id.resourceBadgeListView);
+                final ListView wasteList = (ListView)findViewById(R.id.resourceBadgeListView);
                 System.out.println("results waste list size " + results.size());
                 ArrayList<String> wasteBList = new ArrayList<String>();
                 for(int i = 0; i < results.size(); i++)
@@ -240,10 +240,67 @@ public class MenuActivity extends ActionBarActivity {
                 ArrayAdapter<String> listAdapter = new ArrayAdapter<String>(MenuActivity.this, android.R.layout.simple_list_item_1, wasteBList);
                 wasteList.setAdapter(listAdapter);
 
+                wasteList.setClickable(true);
+               wasteList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//http://stackoverflow.com/questions/2468100/android-listview-click-howto
+                   @Override
+                   public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
+                       Object o = wasteList.getItemAtPosition(position);
+    /* write you handling code like...
+    String st = "sdcard/";
+    File f = new File(st+o.toString());
+    // do whatever u want to do with 'f' File object
+    */
+                       System.out.println("clicked on a list view " + o.toString());
+                       openBadgePage(o.toString(), "WasteBadges");
+                   }
+               });
 
             }
         });
     }
+
+    public void openBadgePage(String badgeTitle, String badgeQuery)
+    {
+        setContentView(R.layout.badge_landing_page);
+        TextView bTitle = (TextView)findViewById(R.id.badgeText);
+        bTitle.setText(badgeTitle);
+
+        ParseQuery<ParseObject> BadgeQuery = new ParseQuery<ParseObject>(
+                badgeQuery);
+
+        //https://parse.com/docs/android_guide#queries-basic
+        BadgeQuery.whereEqualTo("badgeTitle", badgeTitle);
+        BadgeQuery.getFirstInBackground(new GetCallback<ParseObject>() {
+            public void done(ParseObject object, ParseException e) {
+                if (object == null) {
+                    //failed
+                } else {
+                    //retrieved
+                    String badge = object.get("badgeObjective").toString();
+                    TextView objText = (TextView) findViewById(R.id.objectiveText);
+                    objText.setText(badge);
+
+                    //set max progress of badge
+                    ProgressBar mProgress = (ProgressBar) findViewById(R.id.progressBar);
+                    int maxProgress = Integer.parseInt(object.get("endProgress").toString());
+                    mProgress.setMax(maxProgress);
+                }
+            }
+        });
+    }
+
+    public void addProgress(View view)
+    {
+        ProgressBar mProgress = (ProgressBar) findViewById(R.id.progressBar);
+
+        //get progress of badge
+        int i = mProgress.getProgress();
+System.out.println("add progress");
+        mProgress.setProgress(1);
+    }
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
