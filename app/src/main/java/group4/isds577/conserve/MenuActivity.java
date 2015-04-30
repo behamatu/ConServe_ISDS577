@@ -116,7 +116,7 @@ public class MenuActivity extends ActionBarActivity {
         waterBadgeQuery.findInBackground(new FindCallback<ParseObject>() {
             public void done(List<ParseObject> results, ParseException e) {
 
-                ListView waterList = (ListView)findViewById(R.id.resourceBadgeListView);
+                final ListView waterList = (ListView)findViewById(R.id.resourceBadgeListView);
                 System.out.println("results water list size " + results.size());
                 ArrayList<String> waterBList = new ArrayList<String>();
                 for(int i = 0; i < results.size(); i++)
@@ -127,6 +127,16 @@ public class MenuActivity extends ActionBarActivity {
                 ArrayAdapter<String> listAdapter = new ArrayAdapter<String>(MenuActivity.this, android.R.layout.simple_list_item_1, waterBList);
                 waterList.setAdapter(listAdapter);
 
+                waterList.setClickable(true);
+                waterList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    //http://stackoverflow.com/questions/2468100/android-listview-click-howto
+                    @Override
+                    public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
+                        Object o = waterList.getItemAtPosition(position);
+                        System.out.println("clicked on a list view " + o.toString());
+                        openBadgePage(o.toString(), "WaterBadges");
+                    }
+                });
 
             }
         });
@@ -174,7 +184,7 @@ public class MenuActivity extends ActionBarActivity {
         electricityBadgeQuery.findInBackground(new FindCallback<ParseObject>() {
             public void done(List<ParseObject> results, ParseException e) {
 
-                ListView electricityList = (ListView)findViewById(R.id.resourceBadgeListView);
+                final ListView electricityList = (ListView)findViewById(R.id.resourceBadgeListView);
                 System.out.println("results electricity list size " + results.size());
                 ArrayList<String> electricityBList = new ArrayList<String>();
                 for(int i = 0; i < results.size(); i++)
@@ -185,6 +195,16 @@ public class MenuActivity extends ActionBarActivity {
                 ArrayAdapter<String> listAdapter = new ArrayAdapter<String>(MenuActivity.this, android.R.layout.simple_list_item_1, electricityBList);
                 electricityList.setAdapter(listAdapter);
 
+                electricityList.setClickable(true);
+                electricityList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    //http://stackoverflow.com/questions/2468100/android-listview-click-howto
+                    @Override
+                    public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
+                        Object o = electricityList.getItemAtPosition(position);
+                        System.out.println("clicked on a list view " + o.toString());
+                        openBadgePage(o.toString(), "ElectricityBadges");
+                    }
+                });
 
             }
         });
@@ -246,11 +266,6 @@ public class MenuActivity extends ActionBarActivity {
                    @Override
                    public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
                        Object o = wasteList.getItemAtPosition(position);
-    /* write you handling code like...
-    String st = "sdcard/";
-    File f = new File(st+o.toString());
-    // do whatever u want to do with 'f' File object
-    */
                        System.out.println("clicked on a list view " + o.toString());
                        openBadgePage(o.toString(), "WasteBadges");
                    }
@@ -288,16 +303,66 @@ public class MenuActivity extends ActionBarActivity {
                 }
             }
         });
+
+        //set query to save badge to user
+        ParseObject userBadge = new ParseObject("UserBadges");
+
+        //get user name
+        ParseUser user2 = ParseUser.getCurrentUser();
+        String username = user2.getUsername();
+        userBadge.put("username", username);
+        userBadge.put("badgeName", badgeTitle);
+        userBadge.saveInBackground();
     }
 
     public void addProgress(View view)
     {
-        ProgressBar mProgress = (ProgressBar) findViewById(R.id.progressBar);
+        final ProgressBar mProgress = (ProgressBar) findViewById(R.id.progressBar);
 
         //get progress of badge
         int i = mProgress.getProgress();
-System.out.println("add progress");
-        mProgress.setProgress(1);
+System.out.println("add progress, current progress is " + i);
+        mProgress.setProgress(i + 1);
+
+        //set current progress to be what we set in parse
+        ParseQuery<ParseObject> BadgeUserQuery = new ParseQuery<ParseObject>(
+                "UserBadges");
+
+        //https://parse.com/docs/android_guide#queries-basic
+
+        //get the badge name and pass it
+        TextView bTitle = (TextView)findViewById(R.id.badgeText);
+        String bName = bTitle.toString();
+
+        BadgeUserQuery.whereEqualTo("username", ParseUser.getCurrentUser().getUsername());
+
+        //make 2nd query
+        ParseQuery<ParseObject> BadgeUserQuery1 = new ParseQuery<ParseObject>(
+                "UserBadges");
+        BadgeUserQuery1.whereEqualTo("badgeName", bName);
+
+        //make 1st and 2nd
+        List<ParseQuery<ParseObject>> queries = new ArrayList<ParseQuery<ParseObject>>();
+        queries.add(BadgeUserQuery);
+        queries.add(BadgeUserQuery1);
+
+        ParseQuery<ParseObject> mainQuery = ParseQuery.or(queries);
+
+
+        mainQuery.getFirstInBackground(new GetCallback<ParseObject>() {
+            public void done(ParseObject object, ParseException e) {
+                if (object == null) {
+                    System.out.println("failed in updating progress");
+                    //failed
+                } else {
+                    //retrieved
+                    //we update the object
+                    object.put("currentProgress", mProgress.getProgress());
+                    object.saveInBackground();
+                    System.out.println("We saved progress " + mProgress.getProgress());
+                }
+            }
+        });
     }
 
 
