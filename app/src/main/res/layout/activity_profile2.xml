@@ -83,17 +83,10 @@
                 style="?android:attr/buttonStyleSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="View Efforts"
-                android:id="@+id/viewEffortsButton"
-                android:layout_column="0" />
-
-            <Button
-                style="?android:attr/buttonStyleSmall"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:text="View Badges"
                 android:id="@+id/viewBadgesButton"
-                android:layout_column="1" />
+                android:layout_column="0"
+                android:onClick="viewUserBadges" />
         </TableRow>
 
         <TableRow
@@ -140,13 +133,6 @@
                 android:layout_column="0"
                 android:onClick="saveProfileButtonPressed" />
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Back"
-                android:id="@+id/backButton"
-                android:layout_column="1"
-                android:onClick="backButtonPressed" />
         </TableRow>
 
         <TableRow
@@ -163,6 +149,19 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent">
 
+        </TableRow>
+
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Back"
+                android:id="@+id/backButton"
+                android:layout_column="0"
+                android:onClick="backButtonPressed" />
         </TableRow>
     </TableLayout>
 </LinearLayout>

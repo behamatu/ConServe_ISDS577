@@ -73,6 +73,49 @@ public class MenuActivity extends ActionBarActivity {
         //setContentView(R.layout.activity_menu);
     }
 
+    public void viewUserBadges(View view)
+    {
+        //view user badges
+        setContentView(R.layout.user_badge_page);
+
+        //list out all badge titles for each user
+
+        //create a list
+        ParseQuery<ParseObject> userBadgeQuery = new ParseQuery<ParseObject>(
+                "UserBadges");
+        userBadgeQuery.whereEqualTo("username", ParseUser.getCurrentUser().getUsername());
+
+        userBadgeQuery.findInBackground(new FindCallback<ParseObject>() {
+            public void done(List<ParseObject> results, ParseException e) {
+
+                final ListView userListView = (ListView)findViewById(R.id.userBadgeListView);
+                ArrayList<String> userBList = new ArrayList<String>();
+                for(int i = 0; i < results.size(); i++)
+                {
+                    System.out.println("results for open profile size " + results.size());
+                    //System.out.println(results.get(i).getString("badgeName"));
+                    userBList.add(results.get(i).getString("badgeName"));
+                }
+                ArrayAdapter<String> listAdapter = new ArrayAdapter<String>(MenuActivity.this, android.R.layout.simple_list_item_1, userBList);
+                userListView.setAdapter(listAdapter);
+
+                userListView.setClickable(true);
+                userListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    //http://stackoverflow.com/questions/2468100/android-listview-click-howto
+                    @Override
+                    public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
+                        //Object o = userListView.getItemAtPosition(position);
+                        //System.out.println("clicked on a list view " + o.toString());
+                        //pass in badge name and then pass in table name
+
+                        //openBadgePage(o.toString(), "WasteBadges");
+                    }
+                });
+
+            }
+        });
+    }
+
 
 
     public void openWaterPage(View view)
