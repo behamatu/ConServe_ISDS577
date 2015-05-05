@@ -49,12 +49,26 @@ public class MenuActivity extends ActionBarActivity {
         EditText profileUserName = (EditText)findViewById(R.id.editTextUsername);
         profileUserName.setText(user2.getUsername());
 
-        System.out.println("user is " + user2.getUsername());
+        System.out.println("user is " + ParseUser.getCurrentUser().getUsername());
 
-        EditText profileEmail = (EditText)findViewById(R.id.editTextEmail);
-        profileEmail.setText(user2.getEmail());
+        ParseQuery<ParseUser> query = ParseUser.getQuery();
+        query.getInBackground(user2.getObjectId(),new GetCallback<ParseUser>() {
+            @Override
+            public void done(ParseUser parseObject, ParseException e) {
+                String email= parseObject.getEmail();
+                System.out.println("email is " + email);
+                EditText profileEmail = (EditText)findViewById(R.id.editTextEmail);
+                profileEmail.setText(email);
+            }
+        });
 
-        System.out.println("email is " + user2.getEmail());
+        //ParseQuery<ParseUser> query = ParseUser.getQuery();
+
+
+
+
+
+
 
         EditText profilePassword = (EditText)findViewById(R.id.editTextPassword);
        // profileUserName.setText(user2.get);
