@@ -42,7 +42,7 @@ public class LoginActivity extends ActionBarActivity{
         // Set up the login form.
         usernameView = (EditText) findViewById(R.id.etUserName);
         passwordView = (EditText) findViewById(R.id.etPassword);
-
+        //method created by rufflez on 7/8/14 edited by jorge 4/16/2015
         // Set up the submit button click handler
         findViewById(R.id.btLogin).setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {

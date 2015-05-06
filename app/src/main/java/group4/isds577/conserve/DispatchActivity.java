@@ -15,6 +15,7 @@ public class DispatchActivity extends Activity{
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_login); need to create a layout with Conserve logo and bye message
         //otherwise when user presses back, blank screen appears
+        //method created by rufflez on 7/8/14 edited by jorge 4/16/2015
         // Check if there is current user info
         if (ParseUser.getCurrentUser() != null) {
             // Start an intent for the logged in activity
