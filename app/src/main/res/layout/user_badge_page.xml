@@ -10,7 +10,8 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="My Badges"
         android:id="@+id/textView6"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:textColor="#ffffffff" />
 
     <ListView
         android:layout_width="match_parent"
@@ -23,5 +24,8 @@
         android:layout_height="wrap_content"
         android:text="Back"
         android:id="@+id/backButton"
-        android:onClick="backButtonPressed" />
+        android:onClick="backButtonPressed"
+        android:background="#ff0099cc"
+        android:textColor="#ffffff"
+        style="?android:attr/buttonStyleSmall" />
 </LinearLayout>

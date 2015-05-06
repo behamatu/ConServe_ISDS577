@@ -23,7 +23,8 @@
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="Username"
                 android:id="@+id/username"
-                android:layout_column="0" />
+                android:layout_column="0"
+                android:textColor="#ffffffff" />
 
             <EditText
                 android:layout_width="wrap_content"
@@ -44,7 +45,8 @@
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="Email"
                 android:id="@+id/Email"
-                android:layout_column="0" />
+                android:layout_column="0"
+                android:textColor="#ffffffff" />
 
             <EditText
                 android:layout_width="wrap_content"
@@ -65,7 +67,8 @@
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="New Password"
                 android:id="@+id/Password"
-                android:layout_column="0" />
+                android:layout_column="0"
+                android:textColor="#ffffff" />
 
             <EditText
                 android:layout_width="wrap_content"
