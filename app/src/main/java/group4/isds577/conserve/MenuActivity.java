@@ -31,6 +31,9 @@ import java.util.List;
 import java.util.Random;
 
 
+//Johnson Liu
+//I used tutorial and code samples from parse android tutorial here
+//https://parse.com/docs/android/guide
 public class MenuActivity extends ActionBarActivity {
 
 
@@ -144,12 +147,24 @@ public class MenuActivity extends ActionBarActivity {
                     //http://stackoverflow.com/questions/2468100/android-listview-click-howto
                     @Override
                     public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-                        Object o = userListView.getItemAtPosition(position);
+                        final Object o = userListView.getItemAtPosition(position);
                         System.out.println("clicked on a list view " + o.toString());
                         //pass in badge name and then pass in table name
 
-                        //pass in current progress and badge class name
-                        openBadgePage(o.toString(), "WasteBadges");
+                        ParseQuery<ParseObject> ubq2 = new ParseQuery<ParseObject>(
+                                "UserBadges");
+                        //inception, we need to go deeper
+                        ubq2.whereEqualTo("badgeName", o.toString());
+                        ubq2.findInBackground(new FindCallback<ParseObject>() {
+                            public void done(List<ParseObject> results, ParseException e) {
+                                System.out.println("results is inception " + results.size());
+                                String bquery = results.get(0).getString("badgeQuery");
+                                //pass in current progress and badge class name
+                                openBadgePage(o.toString(), bquery);
+                                System.out.println("passed in for user badges " + o.toString() + " " + bquery);
+                            }  });
+
+
                     }
                 });
 
@@ -361,6 +376,7 @@ public class MenuActivity extends ActionBarActivity {
 
     public void openBadgePage(String badgeTitle, final String badgeQuery)
     {
+        System.out.println("opened badge page with " + badgeTitle + " " + badgeQuery);
         setContentView(R.layout.badge_landing_page);
         TextView bTitle = (TextView)findViewById(R.id.badgeText);
         bTitle.setText(badgeTitle);
@@ -371,6 +387,7 @@ public class MenuActivity extends ActionBarActivity {
                 "UserBadges");
 
         bUserQuery.whereEqualTo("username", ParseUser.getCurrentUser().getUsername());
+bUserQuery.whereEqualTo("badgeName", badgeTitle);
 
         //make 2nd query
         ParseQuery<ParseObject> bUserQuery1 = new ParseQuery<ParseObject>(
@@ -381,25 +398,51 @@ public class MenuActivity extends ActionBarActivity {
         List<ParseQuery<ParseObject>> queries = new ArrayList<ParseQuery<ParseObject>>();
         queries.add(bUserQuery);
         queries.add(bUserQuery1);
+        final String b2Title = badgeTitle;
 
         ParseQuery<ParseObject> mainQuery = ParseQuery.or(queries);
 
-        mainQuery.getFirstInBackground(new GetCallback<ParseObject>() {
-            public void done(ParseObject object, ParseException e) {
-                if (object == null) {
+        bUserQuery.findInBackground(new FindCallback<ParseObject>() {
+            public void done(List<ParseObject> results, ParseException e) {
+                // results has the list of players that win a lot or haven't won much.
+                if(results.size() == 0)
+                {
+                    TextView add2Profile = (TextView) findViewById(R.id.add2Profile);
+                    add2Profile.setText("Added badge to profile");
                     System.out.println("failed in updating progress");
+
+                    ParseObject userBadge = new ParseObject("UserBadges");
+                    ParseUser user2 = ParseUser.getCurrentUser();
+                    String username = user2.getUsername();
+                    userBadge.put("username", username);
+                    userBadge.put("badgeName", b2Title);
+                    System.out.println("b2title " + b2Title);
+                    userBadge.put("badgeQuery", badgeQuery);
+                    userBadge.saveInBackground();
                     //failed
-                } else {
+                }
+                else
+                {
                     //retrieved
                     //we want to update the current progress
                     //set max progress of badge
+                    System.out.println("Retrieved");
                     ProgressBar mProgress = (ProgressBar) findViewById(R.id.progressBar);
-                    int currentProgress = Integer.parseInt(object.get("currentProgress").toString());
-                    System.out.println("Set current progress at page load to be " + currentProgress);
-                    mProgress.setProgress(currentProgress);
+
+                    ParseObject object = results.get(0);
+
+                    if(object.get("currentProgress") != null) {
+                        int currentProgress = Integer.parseInt(object.get("currentProgress").toString());
+                        System.out.println("Set current progress at page load to be " + currentProgress);
+                        mProgress.setProgress(currentProgress);
+                    }
                 }
             }
         });
+
+
+
+
 
 
 
@@ -415,14 +458,21 @@ public class MenuActivity extends ActionBarActivity {
                 } else {
                     //retrieved
 
+                    System.out.println("trying to set max progress... badgequery is " + badgeQuery);
+
                     //we want to set the picture depending on what type of badge we get
                     ImageButton imgB = (ImageButton) findViewById(R.id.imageButton4);
-                    if(badgeQuery == "ElectricityBadges")
+
+                    if(badgeQuery.equals("ElectricityBadges"))
                     {imgB.setImageResource(R.mipmap.electricity_icon);}
-                    else if(badgeQuery == "WaterBadges")
-                    {imgB.setImageResource(R.mipmap.water_icon);}
-                    else if(badgeQuery == "WasteBadges")
+                    else if(badgeQuery.equals("WaterBadges"))
+                    {
+                        System.out.println("got water badge image");
+                        imgB.setImageResource(R.mipmap.water_icon);}
+                    else if(badgeQuery.equals("WasteBadges"))
                     {imgB.setImageResource(R.mipmap.waste_icon);}
+
+
 
                     String badge = object.get("badgeObjective").toString();
                     TextView objText = (TextView) findViewById(R.id.objectiveText);
@@ -440,12 +490,19 @@ public class MenuActivity extends ActionBarActivity {
         ParseObject userBadge = new ParseObject("UserBadges");
 
         //get user name
-        ParseUser user2 = ParseUser.getCurrentUser();
-        String username = user2.getUsername();
-        userBadge.put("username", username);
-        userBadge.put("badgeName", badgeTitle);
-        userBadge.put("badgeQuery", badgeQuery);
-        userBadge.saveInBackground();
+        //if we cannot find an existing one, we make one
+//        TextView add2Profile = (TextView) findViewById(R.id.add2Profile);
+//        String add2ProfileText = add2Profile.getText().toString();
+//
+//        if(add2ProfileText == "Added badge to profile") {
+//            ParseUser user2 = ParseUser.getCurrentUser();
+//            String username = user2.getUsername();
+//            userBadge.put("username", username);
+//            userBadge.put("badgeName", badgeTitle);
+//            System.out.println("b2title " + b2Title);
+//            userBadge.put("badgeQuery", badgeQuery);
+//            userBadge.saveInBackground();
+//        }
     }
 
     public void addProgress(View view)
