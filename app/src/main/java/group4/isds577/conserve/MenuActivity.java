@@ -1,6 +1,7 @@
 package group4.isds577.conserve;
 
 import android.content.Intent;
+import android.media.Image;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -64,12 +66,6 @@ public class MenuActivity extends ActionBarActivity {
 
         //ParseQuery<ParseUser> query = ParseUser.getQuery();
 
-
-
-
-
-
-
         EditText profilePassword = (EditText)findViewById(R.id.editTextPassword);
        // profileUserName.setText(user2.get);
 
@@ -85,6 +81,36 @@ public class MenuActivity extends ActionBarActivity {
     {
         System.out.println("saving");
         //setContentView(R.layout.activity_menu);
+
+        //we should save their new email and password
+        EditText profileEmail = (EditText)findViewById(R.id.editTextEmail);
+
+        EditText profilePassword = (EditText)findViewById(R.id.editTextPassword);
+
+        ParseQuery<ParseUser> query = ParseUser.getQuery();
+        query.getInBackground(ParseUser.getCurrentUser().getObjectId(),new GetCallback<ParseUser>() {
+            @Override
+            public void done(ParseUser parseObject, ParseException e) {
+
+                EditText UserText = (EditText)findViewById(R.id.editTextUsername);
+                String username = UserText.getText().toString();
+                System.out.println("new username is " + username);
+                UserText.setText(username);
+                parseObject.setEmail(username);
+
+                EditText profileEmail = (EditText)findViewById(R.id.editTextEmail);
+                String email = profileEmail.getText().toString();
+                System.out.println("new email is " + email);
+                profileEmail.setText(email);
+                parseObject.setEmail(email);
+
+                EditText profilePassword = (EditText)findViewById(R.id.editTextPassword);
+                String newPassword = profilePassword.getText().toString();
+                System.out.println("new password is " + newPassword);
+                profileEmail.setText(newPassword);
+                parseObject.setPassword(newPassword);
+            }
+        });
     }
 
     public void viewUserBadges(View view)
@@ -118,11 +144,12 @@ public class MenuActivity extends ActionBarActivity {
                     //http://stackoverflow.com/questions/2468100/android-listview-click-howto
                     @Override
                     public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-                        //Object o = userListView.getItemAtPosition(position);
-                        //System.out.println("clicked on a list view " + o.toString());
+                        Object o = userListView.getItemAtPosition(position);
+                        System.out.println("clicked on a list view " + o.toString());
                         //pass in badge name and then pass in table name
 
-                        //openBadgePage(o.toString(), "WasteBadges");
+                        //pass in current progress and badge class name
+                        openBadgePage(o.toString(), "WasteBadges");
                     }
                 });
 
@@ -332,11 +359,49 @@ public class MenuActivity extends ActionBarActivity {
         });
     }
 
-    public void openBadgePage(String badgeTitle, String badgeQuery)
+    public void openBadgePage(String badgeTitle, final String badgeQuery)
     {
         setContentView(R.layout.badge_landing_page);
         TextView bTitle = (TextView)findViewById(R.id.badgeText);
         bTitle.setText(badgeTitle);
+
+        //check if the badge already has a current progress and set it first
+        //set current progress to be what we set in parse
+        ParseQuery<ParseObject> bUserQuery = new ParseQuery<ParseObject>(
+                "UserBadges");
+
+        bUserQuery.whereEqualTo("username", ParseUser.getCurrentUser().getUsername());
+
+        //make 2nd query
+        ParseQuery<ParseObject> bUserQuery1 = new ParseQuery<ParseObject>(
+                "UserBadges");
+        bUserQuery1.whereEqualTo("badgeName", badgeTitle);
+
+        //make 1st and 2nd
+        List<ParseQuery<ParseObject>> queries = new ArrayList<ParseQuery<ParseObject>>();
+        queries.add(bUserQuery);
+        queries.add(bUserQuery1);
+
+        ParseQuery<ParseObject> mainQuery = ParseQuery.or(queries);
+
+        mainQuery.getFirstInBackground(new GetCallback<ParseObject>() {
+            public void done(ParseObject object, ParseException e) {
+                if (object == null) {
+                    System.out.println("failed in updating progress");
+                    //failed
+                } else {
+                    //retrieved
+                    //we want to update the current progress
+                    //set max progress of badge
+                    ProgressBar mProgress = (ProgressBar) findViewById(R.id.progressBar);
+                    int currentProgress = Integer.parseInt(object.get("currentProgress").toString());
+                    System.out.println("Set current progress at page load to be " + currentProgress);
+                    mProgress.setProgress(currentProgress);
+                }
+            }
+        });
+
+
 
         ParseQuery<ParseObject> BadgeQuery = new ParseQuery<ParseObject>(
                 badgeQuery);
@@ -349,6 +414,16 @@ public class MenuActivity extends ActionBarActivity {
                     //failed
                 } else {
                     //retrieved
+
+                    //we want to set the picture depending on what type of badge we get
+                    ImageButton imgB = (ImageButton) findViewById(R.id.imageButton4);
+                    if(badgeQuery == "ElectricityBadges")
+                    {imgB.setImageResource(R.mipmap.electricity_icon);}
+                    else if(badgeQuery == "WaterBadges")
+                    {imgB.setImageResource(R.mipmap.water_icon);}
+                    else if(badgeQuery == "WasteBadges")
+                    {imgB.setImageResource(R.mipmap.waste_icon);}
+
                     String badge = object.get("badgeObjective").toString();
                     TextView objText = (TextView) findViewById(R.id.objectiveText);
                     objText.setText(badge);
@@ -369,6 +444,7 @@ public class MenuActivity extends ActionBarActivity {
         String username = user2.getUsername();
         userBadge.put("username", username);
         userBadge.put("badgeName", badgeTitle);
+        userBadge.put("badgeQuery", badgeQuery);
         userBadge.saveInBackground();
     }
 
