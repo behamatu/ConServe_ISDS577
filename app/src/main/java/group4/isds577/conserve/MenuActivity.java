@@ -64,6 +64,8 @@ public class MenuActivity extends ActionBarActivity {
                 System.out.println("email is " + email);
                 EditText profileEmail = (EditText)findViewById(R.id.editTextEmail);
                 profileEmail.setText(email);
+
+
             }
         });
 
@@ -98,20 +100,23 @@ public class MenuActivity extends ActionBarActivity {
                 EditText UserText = (EditText)findViewById(R.id.editTextUsername);
                 String username = UserText.getText().toString();
                 System.out.println("new username is " + username);
-                UserText.setText(username);
-                parseObject.setEmail(username);
+                //UserText.setText(username);
+                if(username != null || username != "")
+                {parseObject.setEmail(username);}
 
                 EditText profileEmail = (EditText)findViewById(R.id.editTextEmail);
                 String email = profileEmail.getText().toString();
                 System.out.println("new email is " + email);
-                profileEmail.setText(email);
-                parseObject.setEmail(email);
+                //profileEmail.setText(email);
+                if(email != null || email != "")
+                {parseObject.setEmail(email);}
 
                 EditText profilePassword = (EditText)findViewById(R.id.editTextPassword);
                 String newPassword = profilePassword.getText().toString();
                 System.out.println("new password is " + newPassword);
-                profileEmail.setText(newPassword);
-                parseObject.setPassword(newPassword);
+                //profileEmail.setText(newPassword);
+                if(newPassword != null || newPassword != "")
+                {parseObject.setPassword(newPassword);}
             }
         });
     }
@@ -522,24 +527,24 @@ System.out.println("add progress, current progress is " + i);
 
         //get the badge name and pass it
         TextView bTitle = (TextView)findViewById(R.id.badgeText);
-        String bName = bTitle.toString();
+        String bName = bTitle.getText().toString();
 
         BadgeUserQuery.whereEqualTo("username", ParseUser.getCurrentUser().getUsername());
-
+        BadgeUserQuery.whereEqualTo("badgeName", bName);
         //make 2nd query
-        ParseQuery<ParseObject> BadgeUserQuery1 = new ParseQuery<ParseObject>(
-                "UserBadges");
-        BadgeUserQuery1.whereEqualTo("badgeName", bName);
+        //ParseQuery<ParseObject> BadgeUserQuery1 = new ParseQuery<ParseObject>(
+        //        "UserBadges");
+        //BadgeUserQuery1.whereEqualTo("badgeName", bName);
 
         //make 1st and 2nd
-        List<ParseQuery<ParseObject>> queries = new ArrayList<ParseQuery<ParseObject>>();
-        queries.add(BadgeUserQuery);
-        queries.add(BadgeUserQuery1);
+        //List<ParseQuery<ParseObject>> queries = new ArrayList<ParseQuery<ParseObject>>();
+        //queries.add(BadgeUserQuery);
+        //queries.add(BadgeUserQuery1);
 
-        ParseQuery<ParseObject> mainQuery = ParseQuery.or(queries);
+        //ParseQuery<ParseObject> mainQuery = ParseQuery.or(queries);
 
 
-        mainQuery.getFirstInBackground(new GetCallback<ParseObject>() {
+        BadgeUserQuery.getFirstInBackground(new GetCallback<ParseObject>() {
             public void done(ParseObject object, ParseException e) {
                 if (object == null) {
                     System.out.println("failed in updating progress");
